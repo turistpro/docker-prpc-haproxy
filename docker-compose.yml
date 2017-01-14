@@ -1,0 +1,37 @@
+weba:
+  image: prpc/tomcat:8-jre8-alpine
+  volumes:
+          - ./conf/Catalina:/usr/local/tomcat/conf/Catalina
+  links:
+    - db
+
+webb:
+  image: prpc/tomcat:8-jre8-alpine
+  volumes:
+          - ./conf/Catalina:/usr/local/tomcat/conf/Catalina
+  links:
+    - db
+
+webc:
+  image: prpc/tomcat:8-jre8-alpine
+  volumes:
+          - ./conf/Catalina:/usr/local/tomcat/conf/Catalina
+  links:
+    - db
+
+db:
+  image: prpc/postgres:9.4-alpine
+
+haproxy:
+  image: haproxy
+  volumes:
+          - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+  links:
+   - weba
+   - webb
+   - webc
+  ports:
+   - "8080:8080"
+
+  expose:
+   - "8080"
